@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./AdminSubscribers.css";
 
-const API = "http://localhost:5000/api/subscribers";
+const API = "https://password-manager-backend.onrender.com/api/subscribers";
 
 function formatDate(iso) {
   try {

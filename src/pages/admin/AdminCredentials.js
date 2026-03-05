@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const API = "http://localhost:5000/api/admin/credentials";
+const API = "https://password-manager-backend.onrender.com/api/admin/credentials";
 
 function formatDate(iso) {
   try { return new Date(iso).toLocaleString(); } catch { return iso; }
