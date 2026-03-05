@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AdminPanel from "./AdminPanel";
 import AdminPaywall from "./AdminPaywall";
+import API_BASE from "../../apiBase";
 
 export default function AdminGatePay() {
   const [loading, setLoading] = useState(true);
@@ -14,7 +15,7 @@ export default function AdminGatePay() {
 
       const token = localStorage.getItem("token"); // ✅ tumhara token key name
       if (!token) throw new Error("No token");
-      const res = await fetch("https://password-manager-backend.onrender.com/api/admin/access", {
+      const res = await fetch(`${API_BASE}/api/admin/access`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

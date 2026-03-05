@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import API_BASE from "../../apiBase";
 export default function AdminPaywall({ onUnlocked }) {
     const [status, setStatus] = useState("");
 
@@ -11,7 +11,7 @@ export default function AdminPaywall({ onUnlocked }) {
             const token = localStorage.getItem("token");
             if (!token) throw new Error("No token");
 
-            const res = await fetch("https://password-manager-backend.onrender.com/api/pay/create-order", {
+            const res = await fetch(`${API_BASE}/api/pay/create-order`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -36,7 +36,7 @@ export default function AdminPaywall({ onUnlocked }) {
                     try {
                         setStatus("Verifying payment...");
 
-                        const vr = await fetch("https://password-manager-backend.onrender.com/api/pay/verify", {
+                        const vr = await fetch(`${API_BASE}/api/pay/verify`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
