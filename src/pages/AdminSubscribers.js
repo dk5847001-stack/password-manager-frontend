@@ -23,14 +23,17 @@ export default function AdminSubscribers() {
       setStatus("");
       const token = localStorage.getItem("token");
 
-const res = await fetch(API, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
+      const res = await fetch(API, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || "Failed");
-      setList(data.data || []);
+      const subscribers =
+        data.subscribers || data.data || data.data?.subscribers || [];
+
+      setList(Array.isArray(subscribers) ? subscribers : []);
     } catch (e) {
       setStatus("Error: " + (e.message || "Fetch failed"));
     } finally {
@@ -58,7 +61,11 @@ const res = await fetch(API, {
 
     try {
       setStatus("Deleting...");
-      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API}/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || "Delete failed");
 
