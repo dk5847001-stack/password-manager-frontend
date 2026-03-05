@@ -10,7 +10,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Navbar from "./Navbar";
 import AdminPanel from "./pages/admin/AdminPanel";
-
+import AdminGatePay from "./pages/admin/AdminGatePay";
 
 import AdminGate from "./pages/AdminGate";
 import RequireAdmin from "./components/RequireAdmin";
@@ -97,10 +97,8 @@ function App() {
   <Route path="/dashboard" element={<Dashboard />} />
   <Route path="/forgot-password" element={<ForgotPassword />} />
   <Route path="/reset-password/:token" element={<ResetPassword />} />
-  <Route path="/admin" element={<AdminPanel />} />
-
-  {/* ✅ Admin Gate */}
-  <Route path="/admin" element={<AdminGate />} />
+  {/* Admin Paywall Gate */}
+  <Route path="/admin" element={<AdminGatePay />} />
 
   {/* ✅ Protected Subscribers */}
  <Route

@@ -21,7 +21,13 @@ export default function AdminSubscribers() {
     try {
       setLoading(true);
       setStatus("");
-      const res = await fetch(API);
+      const token = localStorage.getItem("token");
+
+const res = await fetch(API, {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || "Failed");
       setList(data.data || []);
