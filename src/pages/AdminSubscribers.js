@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import "./AdminSubscribers.css";
 
-const API = "https://password-manager-backend.onrender.com/api/subscribers";
+const API = `${process.env.REACT_APP_API_URL}/api/subscribers`;
 
 function formatDate(iso) {
   try {
@@ -21,15 +21,32 @@ export default function AdminSubscribers() {
     try {
       setLoading(true);
       setStatus("");
+
       const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Admin token not found. Please login again.");
+      }
 
       const res = await fetch(API, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      const contentType = res.headers.get("content-type");
+
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        console.error("Non-JSON response:", text);
+        throw new Error("Server did not return JSON");
+      }
+
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.message || "Failed");
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed");
+      }
+
       const subscribers =
         data.subscribers || data.data || data.data?.subscribers || [];
 
@@ -61,13 +78,32 @@ export default function AdminSubscribers() {
 
     try {
       setStatus("Deleting...");
+
       const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Admin token not found. Please login again.");
+      }
+
       const res = await fetch(`${API}/${id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      const contentType = res.headers.get("content-type");
+
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        console.error("Non-JSON delete response:", text);
+        throw new Error("Server did not return JSON");
+      }
+
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.message || "Delete failed");
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Delete failed");
+      }
 
       setList((prev) => prev.filter((x) => x._id !== id));
       setStatus("Deleted ✅");

@@ -15,52 +15,66 @@ function Footer() {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
 
- const handleSubscribe = async (e) => {
-  e.preventDefault();
+  const API_URL = process.env.REACT_APP_API_URL;
 
-  if (!email || !email.includes("@")) {
-    setStatus("Please enter valid email");
-    return;
-  }
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
 
-  if (!message) {
-    setStatus("Please write message");
-    return;
-  }
-
-  try {
-
-    const res = await fetch("http://localhost:5000/api/subscribers",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        email,
-        message
-      })
-    });
-
-    const data = await res.json();
-
-    if(data.success){
-      setStatus("Subscribed successfully ✅");
-      setEmail("");
-      setMessage("");
+    if (!email || !email.includes("@")) {
+      setStatus("Please enter valid email");
+      return;
     }
 
-  } catch(err){
-    setStatus("Error saving data");
-  }
+    if (!message) {
+      setStatus("Please write message");
+      return;
+    }
 
-};
+    try {
+      setStatus("Saving...");
+
+      const res = await fetch(`${API_URL}/api/subscribers`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          message,
+        }),
+      });
+
+      const contentType = res.headers.get("content-type");
+
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        console.error("Non-JSON response:", text);
+        throw new Error("Server did not return JSON");
+      }
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to save data");
+      }
+
+      if (data.success) {
+        setStatus("Subscribed successfully ✅");
+        setEmail("");
+        setMessage("");
+      } else {
+        setStatus(data.message || "Error saving data");
+      }
+    } catch (err) {
+      console.error("Subscribe error:", err);
+      setStatus("Error saving data");
+    }
+  };
 
   return (
     <footer className="uv-footer">
       <div className="uv-footer__container">
         <div className="uv-footer__card">
-
-          {/* LEFT: Brand */}
           <div className="uv-footer__col">
             <div className="uv-footer__brand">
               <div className="uv-footer__logo">🔐</div>
@@ -79,7 +93,6 @@ function Footer() {
               real-world usage. Your credentials stay protected with encryption.
             </p>
 
-            {/* SOCIAL ICONS */}
             <div className="uv-footer__socials">
               <a className="uv-footer__iconBtn" href="https://github.com/" target="_blank" rel="noreferrer">
                 <FaGithub />
@@ -89,7 +102,6 @@ function Footer() {
                 <FaLinkedin />
               </a>
 
-              {/* NEW */}
               <a className="uv-footer__iconBtn" href="https://facebook.com/" target="_blank" rel="noreferrer">
                 <FaFacebook />
               </a>
@@ -101,11 +113,11 @@ function Footer() {
               <a className="uv-footer__iconBtn" href="https://wa.me/9905167559" target="_blank" rel="noreferrer">
                 <FaWhatsapp />
               </a>
+
               <a className="uv-footer__link" href="/admin">Admin</a>
             </div>
           </div>
 
-          {/* MIDDLE: Subscribe */}
           <div className="uv-footer__col">
             <h5 className="uv-footer__heading">Subscribe</h5>
 
@@ -115,8 +127,6 @@ function Footer() {
             </p>
 
             <form className="uv-footer__form" onSubmit={handleSubscribe}>
-
-              {/* EMAIL */}
               <div className="uv-footer__inputWrap">
                 <FaEnvelope className="uv-footer__inputIcon" />
                 <input
@@ -128,7 +138,6 @@ function Footer() {
                 />
               </div>
 
-              {/* MESSAGE INPUT */}
               <textarea
                 className="uv-footer__textarea"
                 placeholder="Write your message..."
@@ -144,7 +153,6 @@ function Footer() {
             {status && <div className="uv-footer__status">{status}</div>}
           </div>
 
-          {/* RIGHT: Get in touch */}
           <div className="uv-footer__col">
             <h5 className="uv-footer__heading">Get in touch</h5>
 
@@ -170,7 +178,6 @@ function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="uv-footer__bottom">
           <span>© {new Date().getFullYear()} Ultra Vault</span>
           <span className="uv-footer__dot">•</span>
