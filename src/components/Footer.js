@@ -94,19 +94,19 @@ function Footer() {
             </p>
 
             <div className="uv-footer__socials">
-              <a className="uv-footer__iconBtn" href="https://github.com/" target="_blank" rel="noreferrer">
+              <a className="uv-footer__iconBtn" href="/admin" target="_blank" rel="noreferrer">
                 <FaGithub />
               </a>
 
-              <a className="uv-footer__iconBtn" href="https://linkedin.com/" target="_blank" rel="noreferrer">
+              <a className="uv-footer__iconBtn" href="https://www.linkedin.com/in/dilkhush-kumar-43a426372" target="_blank" rel="noreferrer">
                 <FaLinkedin />
               </a>
 
-              <a className="uv-footer__iconBtn" href="https://facebook.com/" target="_blank" rel="noreferrer">
+              <a className="uv-footer__iconBtn" href="https://www.facebook.com/dilkhush.kumar.razz.2025" target="_blank" rel="noreferrer">
                 <FaFacebook />
               </a>
 
-              <a className="uv-footer__iconBtn" href="https://instagram.com/" target="_blank" rel="noreferrer">
+              <a className="uv-footer__iconBtn" href="https://www.instagram.com/dilkhush_10star?igsh=MXVubXJtbHdtODA0aA" target="_blank" rel="noreferrer">
                 <FaInstagram />
               </a>
 
@@ -166,7 +166,7 @@ function Footer() {
 
               <div className="uv-footer__chip">
                 <span className="uv-footer__chipLabel">Support</span>
-                <span className="uv-footer__chipValue">24/7 (Premium UI)</span>
+                <span className="uv-footer__chipValue">24/7 (+91 9905167559)</span>
               </div>
 
               <div className="uv-footer__links">
